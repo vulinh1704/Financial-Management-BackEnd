@@ -84,6 +84,7 @@ public class UserController {
             roles1.add(role1);
             user.setRoles(roles1);
         }
+        user.setAvatar("https://hocban.vn/wp-content/uploads/2018/05/avatar-dep-nhat-33_112147.jpg");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
         userService.save(user);
@@ -114,7 +115,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUserProfile(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> updatePassword(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userOptional = this.userService.findById(id);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -122,10 +123,29 @@ public class UserController {
         user.setId(userOptional.get().getId());
         user.setUsername(userOptional.get().getUsername());
         user.setEnabled(userOptional.get().isEnabled());
-        user.setPassword(userOptional.get().getPassword());
         user.setRoles(userOptional.get().getRoles());
+        user.setAvatar(userOptional.get().getAvatar());
+        user.setEnabled(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getConfirmPassword()));
+        user.setEmail(userOptional.get().getEmail());
+        user.setAddress(userOptional.get().getAddress());
+        user.setSex(userOptional.get().getSex());
+        user.setAge(userOptional.get().getAge());
+        user.setRoles(userOptional.get().getRoles());
+        userService.save(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    @PutMapping("/users/update-profile/{id}")
+    public ResponseEntity<User> updateUserProfile(@PathVariable Long id, @RequestBody User user) {
+        Optional<User> userOptional = this.userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        user.setId(userOptional.get().getId());
+        user.setPassword(userOptional.get().getPassword());
         user.setConfirmPassword(userOptional.get().getConfirmPassword());
-
+        user.setRoles(userOptional.get().getRoles());
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
