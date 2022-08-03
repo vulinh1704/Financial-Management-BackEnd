@@ -6,18 +6,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class CategorySpending {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private int type;
     private String name;
     private int status;
     private String note;
 
-    public CategorySpending() {
+    public Category() {
     }
 
-    public CategorySpending(Long id, String name, int status, String note) {
+    public Category(Long id, String name, int status, String note) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -54,5 +55,13 @@ public class CategorySpending {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

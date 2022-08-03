@@ -1,11 +1,11 @@
 package com.example.airbnb.service;
-import com.example.airbnb.model.CategorySpending;
+import com.example.airbnb.model.Category;
 import java.util.Optional;
 
 public interface CategorySpendingService {
-    CategorySpending save(CategorySpending categorySpending);
+    Category save(Category categorySpending);
 
-    Iterable<CategorySpending> findAll();
+    Iterable<Category> findAll();
 
-    Optional<CategorySpending> findById(Long id);
+    Optional<Category> findById(Long id);
 }

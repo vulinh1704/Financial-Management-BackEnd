@@ -1,6 +1,6 @@
 package com.example.airbnb.service.impl;
 
-import com.example.airbnb.model.CategorySpending;
+import com.example.airbnb.model.Category;
 import com.example.airbnb.repository.CategorySpendingRepository;
 import com.example.airbnb.service.CategorySpendingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +14,17 @@ public class CategorySpendingImpl implements CategorySpendingService {
     private CategorySpendingRepository categorySpendingRepository;
 
     @Override
-    public CategorySpending save(CategorySpending categorySpending) {
+    public Category save(Category categorySpending) {
         return categorySpendingRepository.save(categorySpending);
     }
 
     @Override
-    public Iterable<CategorySpending> findAll() {
+    public Iterable<Category> findAll() {
         return categorySpendingRepository.findAll();
     }
 
     @Override
-    public Optional<CategorySpending> findById(Long id) {
+    public Optional<Category> findById(Long id) {
         return categorySpendingRepository.findById(id);
     }
 
