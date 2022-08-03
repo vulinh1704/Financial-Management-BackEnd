@@ -6,6 +6,7 @@ import com.example.airbnb.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -26,5 +27,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Optional<Transaction> findById(Long id) {
         return transactionRepository.findById(id);
+    }
+
+    @Override
+    public Iterable<Transaction> findAllByTimeBetween(String startTime, String endTime) {
+        return transactionRepository.findAllByTimeBetween(startTime, endTime);
     }
 }
