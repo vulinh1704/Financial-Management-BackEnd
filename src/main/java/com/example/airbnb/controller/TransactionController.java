@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -45,4 +46,11 @@ public class TransactionController {
         transaction.setId(id);
         return new ResponseEntity<>(transactionService.save(transaction), HttpStatus.OK);
     }
+
+//    @GetMapping("find-all-time-between")
+//    public  ResponseEntity<Transaction>findAllByTimeBetween(@RequestParam(value = "startTime") String startTime,
+//                                                            @RequestParam(value = "endTime") String endTime ){
+//        return new ResponseEntity<>(transactionService.findAllByTimeBetween(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime)), HttpStatus.OK);
+//    }
+//}
 }
