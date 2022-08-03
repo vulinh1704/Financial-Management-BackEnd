@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -47,4 +48,27 @@ public class WalletController {
         wallet.setId(id);
         return new ResponseEntity<>(walletService.save(wallet), HttpStatus.OK);
     }
+
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<Wallet> deleteWallet(@PathVariable Long id, @RequestBody Wallet wallet){
+        Optional<Wallet> walletDelete = walletService.findById(id);
+        if(!walletDelete.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        walletDelete.get().setStatus(0);
+        wallet.setId(id);
+        wallet.setStatus(walletDelete.get().getStatus());
+        return new ResponseEntity<>(walletService.save(wallet), HttpStatus.OK);
+    }
+
+    @GetMapping("/history/{id}")
+    public ResponseEntity<Iterable<Wallet>> findAllByStatusPrivateAndUser_Id(@PathVariable Long id) {
+        return new ResponseEntity<>(walletService.findAllByStatusPrivateAndUser_Id(id), HttpStatus.OK) ;
+    }
+
+    @GetMapping("/find-by-ownerId")
+    public ResponseEntity<Iterable<Wallet>> findAllByStatusPublicAndUser_Id(@RequestParam Long id) {
+        return new ResponseEntity<>(walletService.findAllByStatusPublicAndUser_Id(id), HttpStatus.OK);
+    }
+
 }

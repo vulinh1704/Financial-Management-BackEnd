@@ -28,4 +28,14 @@ public class WalletServiceImpl implements WalletService {
         return walletRepository.findById(id);
     }
 
+    @Override
+    public Iterable<Wallet> findAllByStatusPublicAndUser_Id(Long id) {
+        return walletRepository.findAllByStatusPublicAndUser_Id(id);
+    }
+
+    @Override
+    public Iterable<Wallet> findAllByStatusPrivateAndUser_Id(Long id) {
+        return walletRepository.findAllByStatusPrivateAndUser_Id(id);
+    }
 }
+
