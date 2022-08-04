@@ -84,6 +84,7 @@ public class UserController {
             roles1.add(role1);
             user.setRoles(roles1);
         }
+        user.setAvatar("https://hocban.vn/wp-content/uploads/2018/05/avatar-dep-nhat-33_112147.jpg");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
         userService.save(user);
@@ -135,8 +136,7 @@ public class UserController {
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
-    @PutMapping("/users/updateProfile/{id}")
+    @PutMapping("/users/update-profile/{id}")
     public ResponseEntity<User> updateUserProfile(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userOptional = this.userService.findById(id);
         if (!userOptional.isPresent()) {
@@ -145,11 +145,8 @@ public class UserController {
         user.setId(userOptional.get().getId());
         user.setPassword(userOptional.get().getPassword());
         user.setConfirmPassword(userOptional.get().getConfirmPassword());
-        user.setSex(userOptional.get().getSex());
         user.setRoles(userOptional.get().getRoles());
-        user.setId(userOptional.get().getId());
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
 }

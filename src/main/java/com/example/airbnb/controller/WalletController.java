@@ -20,9 +20,9 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    @GetMapping
-    public ResponseEntity<Iterable<Wallet>> findAll() {
-        return new ResponseEntity<>(walletService.findAll(), HttpStatus.OK);
+    @GetMapping("find-by-user/{id}")
+    public ResponseEntity<Iterable<Wallet>> findAll(@PathVariable Long id) {
+        return new ResponseEntity<>(walletService.findAllByStatus(id), HttpStatus.OK);
     }
 
     @GetMapping("{id}")

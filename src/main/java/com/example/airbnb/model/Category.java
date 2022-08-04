@@ -14,6 +14,7 @@ public class Category {
     private String name;
     private int status;
     private String note;
+    private String color;
 
     public Category() {
     }
@@ -63,5 +64,13 @@ public class Category {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

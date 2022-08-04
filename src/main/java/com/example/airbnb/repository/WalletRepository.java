@@ -17,4 +17,8 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
     @Modifying
     @Query(value = "select * from wallet where status = 0 and user_id = :id", nativeQuery = true)
     Iterable<Wallet> findAllByStatusPrivateAndUser_Id(@PathVariable Long id);
+
+    @Modifying
+    @Query(value = "select * from wallet where user_id = :id and (status = 1 or status = 2)", nativeQuery = true)
+    Iterable<Wallet> findAllByStatus(@PathVariable Long id);
 }
