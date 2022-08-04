@@ -1,7 +1,9 @@
 package com.example.airbnb.controller;
 
 import com.example.airbnb.model.Transaction;
+import com.example.airbnb.model.Wallet;
 import com.example.airbnb.service.TransactionService;
+import com.example.airbnb.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
+    @Autowired
+    private WalletService walletService;
+
     @GetMapping
     public ResponseEntity<Iterable<Transaction>> findAll() {
         return new ResponseEntity<>(transactionService.findAll(), HttpStatus.OK);
@@ -33,7 +38,9 @@ public class TransactionController {
     }
 
     @PostMapping
-    private ResponseEntity<Transaction> save(@RequestBody Transaction transaction) {
+    private ResponseEntity<Transaction> save(@RequestBody Transaction transaction ) {
+        Optional<Wallet> wallet = walletService.findById(transaction.getId());
+        wallet.get().setMoneyAmount(wallet.get().getMoneyAmount() - transaction.getTotalSpent());
         return new ResponseEntity<>(transactionService.save(transaction), HttpStatus.OK);
     }
 
@@ -47,10 +54,16 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.save(transaction), HttpStatus.OK);
     }
 
+
 //    @GetMapping("find-all-time-between")
 //    public  ResponseEntity<Transaction>findAllByTimeBetween(@RequestParam(value = "startTime") String startTime,
 //                                                            @RequestParam(value = "endTime") String endTime ){
 //        return new ResponseEntity<>(transactionService.findAllByTimeBetween(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime)), HttpStatus.OK);
 //    }
 //}
+
+    @GetMapping("/find-transaction-by-userId")
+    public ResponseEntity<Iterable<Transaction>> findAllTransactionByUser_Id(@RequestParam Long id) {
+        return new ResponseEntity<>(transactionService.findAllTransactionByUser_Id(id), HttpStatus.OK);
+    }
 }

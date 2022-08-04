@@ -30,6 +30,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public Iterable<Transaction> findAllTransactionByUser_Id(Long id) {
+        return transactionRepository.findAllTransactionByUser_Id(id);
+    }
+
+    @Override
     public Iterable<Transaction> findAllByTimeBetween(String startTime, String endTime) {
         return transactionRepository.findAllByTimeBetween(startTime, endTime);
     }

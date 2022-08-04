@@ -12,5 +12,9 @@ public interface TransactionService {
 
     Optional<Transaction> findById(Long id);
 
+    Iterable<Transaction>findAllTransactionByUser_Id(Long id);
+
+
+
     Iterable<Transaction>findAllByTimeBetween(@Param("startTime") String startTime, @Param("endTime") String endTime);
 }
