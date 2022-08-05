@@ -17,9 +17,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
-    public ResponseEntity<Iterable<Category>> findAll() {
-        return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
+    @GetMapping("find-by-user/{id}")
+    public ResponseEntity<Iterable<Category>> findAll(@PathVariable Long id) {
+        return new ResponseEntity<>(categoryService.findAllByUserId(id), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
@@ -44,5 +44,15 @@ public class CategoryController {
         }
         category.setId(id);
         return new ResponseEntity<>(categoryService.save(category), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    private ResponseEntity<Category> delete(@PathVariable Long id) {
+        Optional<Category> optionalCategory = categoryService.findById(id);
+        if (!optionalCategory.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        categoryService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

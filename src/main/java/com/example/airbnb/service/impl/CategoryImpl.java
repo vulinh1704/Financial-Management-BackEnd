@@ -28,4 +28,14 @@ public class CategoryImpl implements CategoryService {
         return categoryRepository.findById(id);
     }
 
+    @Override
+    public void delete(Long id) {
+        categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<Category> findAllByUserId(Long id) {
+        return categoryRepository.findAllByUserId(id);
+    }
+
 }

@@ -9,7 +9,7 @@ public class Transaction {
     private Long id;
     private Long totalSpent;
     @ManyToOne
-    @JoinColumn(name = "categorySpending_id")
+    @JoinColumn(name = "category_id")
     private Category categorySpending;
     @ManyToOne
     @JoinColumn(name = "wallet_id")
