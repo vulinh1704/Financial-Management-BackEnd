@@ -10,7 +10,7 @@ public class Transaction {
     private Long totalSpent;
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category categorySpending;
+    private Category category;
     @ManyToOne
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
@@ -36,12 +36,12 @@ public class Transaction {
         this.totalSpent = totalSpent;
     }
 
-    public Category getCategorySpending() {
-        return categorySpending;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategorySpending(Category categorySpending) {
-        this.categorySpending = categorySpending;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Wallet getWallet() {
