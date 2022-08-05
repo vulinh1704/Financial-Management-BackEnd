@@ -71,4 +71,19 @@ public class WalletController {
         return new ResponseEntity<>(walletService.findAllByStatusPublicAndUser_Id(id), HttpStatus.OK);
     }
 
+    @PutMapping("/update-status/{id}")
+    public ResponseEntity<Wallet> updateStatus(@PathVariable Long id, @RequestBody Wallet wallet){
+        Optional<Wallet> walletOptional = walletService.findById(id);
+        if(!walletOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        wallet.setId(id);
+        if (wallet.getStatus() == 1) {
+            wallet.setStatus(2);
+        }
+        if (wallet.getStatus() == 2) {
+            wallet.setStatus(1);
+        }
+        return new ResponseEntity<>(walletService.save(wallet), HttpStatus.OK);
+    }
 }

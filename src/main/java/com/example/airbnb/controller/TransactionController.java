@@ -26,9 +26,9 @@ public class TransactionController {
     @Autowired
     private WalletService walletService;
 
-    @GetMapping
-    public ResponseEntity<Iterable<Transaction>> findAll() {
-        return new ResponseEntity<>(transactionService.findAll(), HttpStatus.OK);
+    @GetMapping("find-by-wallet/{id}")
+    public ResponseEntity<Iterable<Transaction>> findAll(@PathVariable Long id) {
+        return new ResponseEntity<>(transactionService.findAllByWallet_Id(id), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
@@ -53,19 +53,6 @@ public class TransactionController {
         }
         transaction.setId(id);
         return new ResponseEntity<>(transactionService.save(transaction), HttpStatus.OK);
-    }
-    @GetMapping("/user/{id}")
-    public ResponseEntity<Iterable<Transaction>> findAllByUser_Id(@PathVariable Long id) {
-        return new ResponseEntity<>(transactionService.findAllByUser_Id(id), HttpStatus.OK);
-    }
-
-    @GetMapping("/income-user/{id}")
-    public ResponseEntity<Iterable<Transaction>> findAllByCategoryIncomeUser_Id(@PathVariable Long id) {
-        return new ResponseEntity<>(transactionService.findAllByCategoryIncomeUser_Id(id), HttpStatus.OK);
-    }
-    @GetMapping("/expense-user/{id}")
-    public ResponseEntity<Iterable<Transaction>> findAllByCategoryExpenseUser_Id(@PathVariable Long id) {
-        return new ResponseEntity<>(transactionService.findAllByCategoryExpenseUser_Id(id), HttpStatus.OK);
     }
 
     @PostMapping("/create")
