@@ -38,8 +38,8 @@ public class CategoryController {
 
     @PutMapping("{id}")
     private ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category) {
-        Optional<Category> optionalCategory = categoryService.findById(id);
-        if (!optionalCategory.isPresent()) {
+        Optional<Category> categoryOptional = categoryService.findById(id);
+        if (!categoryOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         category.setId(id);
