@@ -1,8 +1,10 @@
 package com.example.airbnb.controller;
 
 import com.example.airbnb.model.JwtResponse;
+import com.example.airbnb.model.OldPassword;
 import com.example.airbnb.model.Role;
 import com.example.airbnb.model.User;
+import com.example.airbnb.service.OldPasswordService;
 import com.example.airbnb.service.RoleService;
 import com.example.airbnb.service.UserService;
 import com.example.airbnb.service.impl.JwtService;
@@ -46,6 +48,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private OldPasswordService oldPasswordService;
 
 
     @GetMapping("/users")
@@ -119,6 +124,9 @@ public class UserController {
         Optional<User> userOptional = this.userService.findById(id);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<OldPassword> oldPasswords = oldPasswordService.findAll();
+        for (OldPassword oldPassword: oldPasswords) {
         }
         user.setId(userOptional.get().getId());
         user.setUsername(userOptional.get().getUsername());

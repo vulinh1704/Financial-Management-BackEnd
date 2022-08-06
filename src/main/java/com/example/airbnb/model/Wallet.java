@@ -9,7 +9,7 @@ public class Wallet {
     private Long id;
     private String icon;
     private String name;
-    private Long moneyAmount;
+    private double moneyAmount;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -45,11 +45,11 @@ public class Wallet {
         this.name = name;
     }
 
-    public Long getMoneyAmount() {
+    public double getMoneyAmount() {
         return moneyAmount;
     }
 
-    public void setMoneyAmount(Long moneyAmount) {
+    public void setMoneyAmount(double moneyAmount) {
         this.moneyAmount = moneyAmount;
     }
 

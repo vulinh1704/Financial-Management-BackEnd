@@ -7,7 +7,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long totalSpent;
+    private double totalSpent;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -28,11 +28,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public Long getTotalSpent() {
+    public double getTotalSpent() {
         return totalSpent;
     }
 
-    public void setTotalSpent(Long totalSpent) {
+    public void setTotalSpent(double totalSpent) {
         this.totalSpent = totalSpent;
     }
 

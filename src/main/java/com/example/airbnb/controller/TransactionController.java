@@ -4,7 +4,6 @@ import com.example.airbnb.model.Transaction;
 import com.example.airbnb.model.Wallet;
 import com.example.airbnb.service.TransactionService;
 import com.example.airbnb.service.WalletService;
-import com.example.airbnb.service.impl.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +18,6 @@ import java.util.Optional;
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private TransactionServiceImpl service;
 
     @Autowired
     private WalletService walletService;
@@ -72,7 +68,7 @@ public class TransactionController {
     public ResponseEntity<Optional<Transaction>> createTransaction(@RequestBody Transaction transaction) {
         Optional<Wallet> wallet = walletService.findById(transaction.getWallet().getId());
         transactionService.save(transaction);
-        if (transaction.getCategory().getType() == 1) {
+        if (transaction.getCategory().getStatus() == 1) {
             wallet.get().setMoneyAmount(wallet.get().getMoneyAmount() + transaction.getTotalSpent());
             walletService.save(wallet.get());
         }else {
@@ -87,7 +83,7 @@ public class TransactionController {
         Optional<Transaction> transaction = transactionService.findById(id);
         Optional<Wallet> editWallet = walletService.findById(transaction.get().getWallet().getId());
         editWallet.get().setId(transaction.get().getWallet().getId());
-        if (transaction.get().getCategory().getType() == 1) {
+        if (transaction.get().getCategory().getStatus() == 1) {
             editWallet.get().setMoneyAmount(editWallet.get().getMoneyAmount() - transaction.get().getTotalSpent());
         }else {
             editWallet.get().setMoneyAmount(editWallet.get().getMoneyAmount() + transaction.get().getTotalSpent());
@@ -101,8 +97,8 @@ public class TransactionController {
         Optional<Transaction> editTransaction = transactionService.findById(id);
         Optional<Wallet> wallet = walletService.findById(editTransaction.get().getWallet().getId());
         transaction.setId(id);
-        int oldTransaction = editTransaction.get().getCategory().getType();
-        int newTransaction = transaction.getCategory().getType();
+        int oldTransaction = editTransaction.get().getCategory().getStatus();
+        int newTransaction = transaction.getCategory().getStatus();
         wallet.get().setId(wallet.get().getId());
         if ((oldTransaction == 1) && (newTransaction == 1)) {
             wallet.get().setMoneyAmount(wallet.get().getMoneyAmount() - editTransaction.get().getTotalSpent() + transaction.getTotalSpent());
@@ -117,11 +113,4 @@ public class TransactionController {
         walletService.save(wallet.get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-//    @GetMapping("find-all-time-between")  VI 2000 : THU 2000 SUA 1000
-//    public  ResponseEntity<Transaction>findAllByTimeBetween(@RequestParam(value = "startTime") String startTime,
-//                                                            @RequestParam(value = "endTime") String endTime ){
-//        return new ResponseEntity<>(transactionService.findAllByTimeBetween(LocalDateTime.parse(startTime),LocalDateTime.parse(endTime)), HttpStatus.OK);
-//    }
-//}
 }

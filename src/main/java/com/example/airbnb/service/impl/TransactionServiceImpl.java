@@ -49,6 +49,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public Iterable<Transaction> findAllByWallet(Long id) {
+        return transactionRepository.findAllByWallet(id);
+    }
+
+    @Override
     public void remove(Long id) {
         transactionRepository.deleteById(id);
     }

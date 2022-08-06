@@ -1,14 +1,11 @@
 package com.example.airbnb.repository;
 
 import com.example.airbnb.model.Transaction;
-import com.example.airbnb.model.Wallet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.time.LocalDateTime;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
@@ -46,4 +43,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "join user_table u on  w.user_id = u.id\n" +
             "where u.id = :id and t.category_id = 2", nativeQuery = true)
     Iterable<Transaction> findAllByCategoryExpenseUser_Id(@PathVariable Long id);
+    @Query(value = "select t.id, t.note, t.time, t.total_spent,t.category_id, t.wallet_id\n" +
+            "from transaction t\n" +
+            "where wallet_id = :id", nativeQuery = true)
+    Iterable<Transaction> findAllByWallet(@PathVariable Long id);
+
 }

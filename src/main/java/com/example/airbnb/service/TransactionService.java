@@ -17,8 +17,7 @@ public interface TransactionService {
     Iterable<Transaction> findAllByCategoryIncomeUser_Id(@PathVariable Long id);
 
     Iterable<Transaction> findAllByCategoryExpenseUser_Id(@PathVariable Long id);
-
-
+    Iterable<Transaction> findAllByWallet(Long id);
     void remove(Long id);
 
 }
