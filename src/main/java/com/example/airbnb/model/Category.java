@@ -7,7 +7,6 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int type;
     private String name;
     private int status;
     private String note;
@@ -56,14 +55,6 @@ public class Category {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public String getColor() {

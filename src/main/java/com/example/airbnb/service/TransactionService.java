@@ -12,8 +12,12 @@ public interface TransactionService {
 
     Optional<Transaction> findById(Long id);
 
-    Iterable<Transaction>findAllByWallet_Id(Long id);
+    Iterable<Transaction>findAllByTimeBetween(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    Iterable<Transaction> findAllByUser_Id(@PathVariable Long id);
+    Iterable<Transaction> findAllByCategoryIncomeUser_Id(@PathVariable Long id);
 
+    Iterable<Transaction> findAllByCategoryExpenseUser_Id(@PathVariable Long id);
+    Iterable<Transaction> findAllByWallet(Long id);
     void remove(Long id);
 
 }
