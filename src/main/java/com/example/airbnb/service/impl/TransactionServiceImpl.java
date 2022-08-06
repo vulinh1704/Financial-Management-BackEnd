@@ -29,23 +29,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Iterable<Transaction> findAllByTimeBetween(String startTime, String endTime) {
-        return transactionRepository.findAllByTimeBetween(startTime, endTime);
-    }
-
-    @Override
-    public Iterable<Transaction> findAllByUser_Id(Long id) {
-        return transactionRepository.findAllByUser_Id(id);
-    }
-
-    @Override
-    public Iterable<Transaction> findAllByCategoryIncomeUser_Id(Long id) {
-        return transactionRepository.findAllByCategoryIncomeUser_Id(id);
-    }
-
-    @Override
-    public Iterable<Transaction> findAllByCategoryExpenseUser_Id(Long id) {
-        return transactionRepository.findAllByCategoryExpenseUser_Id(id);
+    public Iterable<Transaction> findAllByWallet_Id(Long id) {
+        return transactionRepository.findAllByWallet_Id(id);
     }
 
     @Override
