@@ -31,6 +31,11 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.findById(id).get(), HttpStatus.OK);
     }
 
+    @GetMapping("find-by-status/{num}")
+    public ResponseEntity<Iterable<Category>> findAllByStatus(@PathVariable int num) {
+        return new ResponseEntity<>(categoryService.findAllByStatus(num), HttpStatus.OK);
+    }
+
     @PostMapping
     private ResponseEntity<Category> save(@RequestBody Category category) {
         return new ResponseEntity<>(categoryService.save(category), HttpStatus.OK);

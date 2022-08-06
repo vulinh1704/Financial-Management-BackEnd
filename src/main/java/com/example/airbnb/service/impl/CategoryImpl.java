@@ -34,6 +34,11 @@ public class CategoryImpl implements CategoryService {
     }
 
     @Override
+    public Iterable<Category> findAllByStatus(int num) {
+        return categoryRepository.findAllByStatus(num);
+    }
+
+    @Override
     public Iterable<Category> findAllByUserId(Long id) {
         return categoryRepository.findAllByUserId(id);
     }

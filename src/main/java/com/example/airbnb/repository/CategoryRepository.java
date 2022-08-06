@@ -12,4 +12,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Modifying
     @Query(value = "select * from category where user_id = :id", nativeQuery = true)
     Iterable<Category> findAllByUserId(@PathVariable Long id);
+
+    @Modifying
+    @Query(value = "select * from category where status = :num", nativeQuery = true)
+    Iterable<Category> findAllByStatus(@PathVariable int num);
 }
