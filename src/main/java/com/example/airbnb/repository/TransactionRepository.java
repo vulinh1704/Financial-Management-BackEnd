@@ -9,17 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    @Query(value = "select * from `financial-management`.transaction " +
-            "where category_spending_id=? ",nativeQuery = true)
+    @Query(value = "select * from `financial_management`.transaction " +
+            "where category_id=? ",nativeQuery = true)
     Iterable<Transaction>findAllByCategorySpending_Id(Long id);
 
-    @Query(value = "select * from `financial-management`.transaction where wallet_id=?",nativeQuery = true)
+    @Query(value = "select * from `financial_management`.transaction where wallet_id=?",nativeQuery = true)
     Iterable<Transaction>findAllByWallet_Id(Long id);
-
-    @Query(value = "select * from `financial-management`.transaction\n" +
-            "where time between startTime and endTime",nativeQuery = true)
-    Iterable<Transaction>findAllByTimeBetween(@Param("startTime") String startTime, @Param("endTime") String endTime);
-
 
     @Query(value = "select c.name, t.id, t.note, t.time, t.total_spent,t.category_id, t.wallet_id, w.name, u.username\n" +
             "from transaction t\n" +
