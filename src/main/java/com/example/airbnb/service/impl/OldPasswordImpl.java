@@ -32,4 +32,9 @@ public class OldPasswordImpl implements OldPasswordService {
     public void remove(Long id) {
         oldPasswordRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<OldPassword> findAllByUserIdTop3OldPassword(Long id) {
+        return oldPasswordRepository.findAllByUserIdTop3OldPassword(id);
+    }
 }

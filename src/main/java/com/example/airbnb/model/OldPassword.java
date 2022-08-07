@@ -16,7 +16,7 @@ public class OldPassword {
     private LocalDateTime dateTime;
 
     @ManyToOne
-    private User user_id;
+    private User user;
 
     public OldPassword() {
     }
@@ -45,11 +45,12 @@ public class OldPassword {
         this.dateTime = dateTime;
     }
 
-    public User getUser_id() {
-        return user_id;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
