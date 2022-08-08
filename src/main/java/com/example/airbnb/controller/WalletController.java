@@ -84,7 +84,7 @@ public class WalletController {
         wallet.setId(walletOptional.get().getId());
         Iterable<Transaction> transactions = transactionService.findAllByWallet(walletOptional.get().getId());
         if (walletOptional.get().getMoneyType().getId() == 1) {
-            wallet.setMoneyAmount(Math.ceil((walletOptional.get().getMoneyAmount() / 23000) * 100) / 100);
+        wallet.setMoneyAmount(Math.ceil((walletOptional.get().getMoneyAmount() / 23000) * 100) / 100);
         }else {
             wallet.setMoneyAmount(Math.ceil((walletOptional.get().getMoneyAmount() * 23000) * 100) / 100);
         }
