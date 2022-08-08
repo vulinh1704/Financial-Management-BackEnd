@@ -21,7 +21,7 @@ public interface TransactionService {
 
     void remove(Long id);
 
-    Iterable<Transaction> findAllByMonthTimeAndYearTime(int status, String month);
+    Iterable<Transaction> findAllByMonthTimeAndYearTime(int status, String month, int id);
 
     Iterable<Transaction>findAllTransactionsIncomeFor6Months(Long id, String presentTime, String sixMonthsAgo);
 

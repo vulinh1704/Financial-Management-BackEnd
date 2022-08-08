@@ -104,9 +104,14 @@ public class TransactionController {
     }
 
     @GetMapping("find-all-by-time")
-    public ResponseEntity<Iterable<Transaction>> findAllByMonthTimeAndYearTime(@RequestParam("status") int status) {
+    public ResponseEntity<Iterable<Transaction>> findAllByMonthTimeAndYearTime(@RequestParam("status") int status, @RequestParam("id") int id) {
         String month = String.valueOf(YearMonth.now());
-        return new ResponseEntity<>(transactionService.findAllByMonthTimeAndYearTime(status, month), HttpStatus.OK);
+        return new ResponseEntity<>(transactionService.findAllByMonthTimeAndYearTime(status, month, id), HttpStatus.OK);
+    }
+    @GetMapping("find-all-by-time2")
+    public ResponseEntity<Iterable<Transaction>> findAllByMonthTimeAndYearTime( @RequestParam("id") int id) {
+        String month = String.valueOf(YearMonth.now());
+        return new ResponseEntity<>(transactionService.findAllByMonthTimeAndYearTime(2, month, id), HttpStatus.OK);
     }
 
     @GetMapping("/find-all-income-6Month/{id}")

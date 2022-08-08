@@ -54,8 +54,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "from transaction t\n" +
             "         join category c on c.id = t.category_id\n" +
             "where c.status = :status\n" +
-            "  and t.time like concat('%',:month, '%')", nativeQuery = true)
-    Iterable<Transaction> findAllByMonthTimeAndYearTime(@Param("status") int status, @Param("month") String month);
+            "  and t.time like concat('%',:month, '%') and t.wallet_id  = :id", nativeQuery = true)
+    Iterable<Transaction> findAllByMonthTimeAndYearTime(@Param("status") int status, @Param("month") String month,@Param("id") int id);
 
     @Query(value = "select * from transaction t\n" +
             "join wallet w on t.wallet_id = w.id\n" +
