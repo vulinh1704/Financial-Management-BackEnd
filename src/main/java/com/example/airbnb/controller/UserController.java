@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -52,7 +53,6 @@ public class UserController {
     @Autowired
     private OldPasswordService oldPasswordService;
 
-
     @GetMapping("/users")
     public ResponseEntity<Iterable<User>> showAllUser() {
         Iterable<User> users = userService.findAll();
@@ -66,6 +66,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user, BindingResult bindingResult) {
+        OldPassword oldPass = new OldPassword();
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -89,10 +90,14 @@ public class UserController {
             roles1.add(role1);
             user.setRoles(roles1);
         }
+        oldPass.setPass(user.getPassword());
+        oldPass.setDateTime(LocalDateTime.now());
+        oldPass.setUser(user);
         user.setAvatar("https://hocban.vn/wp-content/uploads/2018/05/avatar-dep-nhat-33_112147.jpg");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
         userService.save(user);
+        oldPasswordService.save(oldPass);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
     @PostMapping("/login")
@@ -119,15 +124,23 @@ public class UserController {
         return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updatePassword(@PathVariable Long id, @RequestBody User user) {
+        OldPassword oldPass = new OldPassword();
         Optional<User> userOptional = this.userService.findById(id);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Iterable<OldPassword> oldPasswords = oldPasswordService.findAll();
+        Iterable<OldPassword> oldPasswords = oldPasswordService.findAllByUserIdTop3OldPassword(userOptional.get().getId());
         for (OldPassword oldPassword: oldPasswords) {
+            if (user.getPassword().equals(oldPassword.getPass())) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
+        oldPass.setPass(user.getPassword());
+        oldPass.setDateTime(LocalDateTime.now());
+        oldPass.setUser(user);
         user.setId(userOptional.get().getId());
         user.setUsername(userOptional.get().getUsername());
         user.setEnabled(userOptional.get().isEnabled());
@@ -142,6 +155,7 @@ public class UserController {
         user.setAge(userOptional.get().getAge());
         user.setRoles(userOptional.get().getRoles());
         userService.save(user);
+        oldPasswordService.save(oldPass);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     @PutMapping("/users/update-profile/{id}")

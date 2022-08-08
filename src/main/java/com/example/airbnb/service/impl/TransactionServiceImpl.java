@@ -42,4 +42,19 @@ public class TransactionServiceImpl implements TransactionService {
     public void remove(Long id) {
         transactionRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Transaction> findAllByMonthTimeAndYearTime(int status, String month, int id) {
+        return transactionRepository.findAllByMonthTimeAndYearTime(status, month, id);
+    }
+
+    @Override
+    public Iterable<Transaction> findAllTransactionsIncomeFor6Months(Long id, String presentTime, String sixMonthsAgo) {
+        return transactionRepository.findAllTransactionsIncomeFor6Months(id, presentTime, sixMonthsAgo);
+    }
+
+    @Override
+    public Iterable<Transaction> findAllTransactionsExpenseFor6Months(Long id, String presentTime, String sixMonthsAgo) {
+        return transactionRepository.findAllTransactionsExpenseFor6Months(id, presentTime, sixMonthsAgo);
+    }
 }

@@ -11,4 +11,7 @@ public interface OldPasswordService {
 
     Optional<OldPassword> findById(Long id);
 
-    void remove(Long id);}
+    void remove(Long id);
+    Iterable<OldPassword> findAllByUserIdTop3OldPassword(Long id);
+
+}
