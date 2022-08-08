@@ -6,7 +6,10 @@ import com.example.airbnb.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Service
 public class CategoryImpl implements CategoryService {

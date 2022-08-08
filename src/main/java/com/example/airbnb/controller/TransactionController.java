@@ -108,4 +108,41 @@ public class TransactionController {
         String month = String.valueOf(YearMonth.now());
         return new ResponseEntity<>(transactionService.findAllByMonthTimeAndYearTime(status, month), HttpStatus.OK);
     }
+
+    @GetMapping("/find-all-income-6Month/{id}")
+    public ResponseEntity<Iterable<Transaction>> findAllTransactionsIncomeFor6Months(@PathVariable Long id) {
+        String presentTime = String.valueOf(java.time.LocalDate.now());
+        String[] time = presentTime.split("-");
+        int year = Integer.parseInt(time[0]);
+        int month = Integer.parseInt(time[1]) - 6;
+        String sixMonthsAgo;
+        String day = time[2];
+        if (month < 1) {
+            year = year - 1;
+            month = 12;
+        }if (month < 10) {
+            sixMonthsAgo = year + "-0" + month + "-" + day;
+        }else {
+            sixMonthsAgo = year + "-" + month + "-" + day;
+        }
+        return new ResponseEntity<>(transactionService.findAllTransactionsIncomeFor6Months(id, presentTime, sixMonthsAgo), HttpStatus.OK);
+    }
+    @GetMapping("/find-all-Expense-6Month/{id}")
+    public ResponseEntity<Iterable<Transaction>> findAllTransactionsExpenseFor6Months(@PathVariable Long id) {
+        String presentTime = String.valueOf(java.time.LocalDate.now());
+        String[] time = presentTime.split("-");
+        int year = Integer.parseInt(time[0]);
+        int month = Integer.parseInt(time[1]) - 6;
+        String sixMonthsAgo;
+        String day = time[2];
+        if (month < 1) {
+            year = year - 1;
+            month = 12;
+        }if (month < 10) {
+            sixMonthsAgo = year + "-0" + month + "-" + day;
+        }else {
+            sixMonthsAgo = year + "-" + month + "-" + day;
+        }
+        return new ResponseEntity<>(transactionService.findAllTransactionsExpenseFor6Months(id, presentTime, sixMonthsAgo), HttpStatus.OK);
+    }
 }
