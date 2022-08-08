@@ -12,6 +12,8 @@ public class MoneyType {
     private Long id;
     private String name;
 
+    private double exchangeRate;
+
     public MoneyType() {
     }
 
@@ -29,5 +31,13 @@ public class MoneyType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(double exchangeRate) {
+        this.exchangeRate = exchangeRate;
     }
 }

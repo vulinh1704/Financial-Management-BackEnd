@@ -60,14 +60,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "select * from transaction t\n" +
             "join wallet w on t.wallet_id = w.id\n" +
             "join category c on c.id = t.category_id\n" +
-            "where w.id = :id and c.status = 1\n" +
-            "ORDER BY t.time BETWEEN :presentTime and :sixMonthsAgo",nativeQuery = true)
+            "where t.time >= :sixMonthsAgo and time<= :presentTime and w.id = :id and c.status = 1",nativeQuery = true)
     Iterable<Transaction>findAllTransactionsIncomeFor6Months(@PathVariable Long id, @Param("presentTime") String presentTime, @Param("sixMonthsAgo") String sixMonthsAgo);
     @Query(value = "select * from transaction t\n" +
             "join wallet w on t.wallet_id = w.id\n" +
             "join category c on c.id = t.category_id\n" +
-            "where w.id = :id and c.status = 2\n" +
-            "ORDER BY t.time BETWEEN :presentTime and :sixMonthsAgo",nativeQuery = true)
+            "where t.time >= :sixMonthsAgo and time<= :presentTime and w.id = :id and c.status = 2",nativeQuery = true)
     Iterable<Transaction>findAllTransactionsExpenseFor6Months(@PathVariable Long id, @Param("presentTime") String presentTime, @Param("sixMonthsAgo") String sixMonthsAgo);
 
 }
