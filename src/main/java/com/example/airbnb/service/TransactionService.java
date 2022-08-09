@@ -14,6 +14,7 @@ public interface TransactionService {
 
     Optional<Transaction> findById(Long id);
 
+    Iterable<Transaction> findAllByCategory_Id(Long id);
 
     Iterable<Transaction> findAllByWallet_Id(Long id);
 

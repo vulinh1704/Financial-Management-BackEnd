@@ -31,9 +31,9 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.findById(id).get(), HttpStatus.OK);
     }
 
-    @GetMapping("find-by-status/{num}")
-    public ResponseEntity<Iterable<Category>> findAllByStatus(@PathVariable int num) {
-        return new ResponseEntity<>(categoryService.findAllByStatus(num), HttpStatus.OK);
+    @GetMapping("find-by-status/{num}/{id}")
+    public ResponseEntity<Iterable<Category>> findAllByStatus(@PathVariable int num, @PathVariable Long id) {
+        return new ResponseEntity<>(categoryService.findAllByStatus(num, id), HttpStatus.OK);
     }
 
     @PostMapping

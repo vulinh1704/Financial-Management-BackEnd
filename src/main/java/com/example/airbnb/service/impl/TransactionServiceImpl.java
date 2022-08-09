@@ -29,6 +29,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public Iterable<Transaction> findAllByCategory_Id(Long id) {
+        return transactionRepository.findAllByCategory_Id(id);
+    }
+
+    @Override
     public Iterable<Transaction> findAllByWallet_Id(Long id) {
         return transactionRepository.findAllByWallet_Id(id);
     }

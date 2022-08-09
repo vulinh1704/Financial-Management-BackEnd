@@ -13,7 +13,7 @@ public interface CategoryService {
 
     void delete(Long id);
 
-    Iterable<Category> findAllByStatus(int num);
+    Iterable<Category> findAllByStatus(int num, Long id);
 
     Iterable<Category> findAllByUserId(Long id);
 }
