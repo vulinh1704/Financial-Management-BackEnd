@@ -33,7 +33,7 @@ public class CategoryController {
 
     @GetMapping("find-by-status/{num}/{id}")
     public ResponseEntity<Iterable<Category>> findAllByStatus(@PathVariable int num, @PathVariable Long id) {
-        return new ResponseEntity<>(categoryService.findAllByStatus(num, id), HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.findAllByStatus(num,id), HttpStatus.OK);
     }
 
     @PostMapping

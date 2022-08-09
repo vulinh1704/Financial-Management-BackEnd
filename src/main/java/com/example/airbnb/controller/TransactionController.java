@@ -1,7 +1,9 @@
 package com.example.airbnb.controller;
 
+import com.example.airbnb.model.Category;
 import com.example.airbnb.model.Transaction;
 import com.example.airbnb.model.Wallet;
+import com.example.airbnb.service.CategoryService;
 import com.example.airbnb.service.TransactionService;
 import com.example.airbnb.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +26,9 @@ public class TransactionController {
 
     @Autowired
     private WalletService walletService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("find-by-wallet/{id}")
     public ResponseEntity<Iterable<Transaction>> findAll(@PathVariable Long id) {
@@ -60,6 +67,8 @@ public class TransactionController {
     @PostMapping("/create")
     public ResponseEntity<Optional<Transaction>> createTransaction(@RequestBody Transaction transaction) {
         Optional<Wallet> wallet = walletService.findById(transaction.getWallet().getId());
+        Optional<Category> category = categoryService.findById(transaction.getCategory().getId());
+        transaction.getCategory().setStatus(category.get().getStatus());
         transactionService.save(transaction);
         if (transaction.getCategory().getStatus() == 1) {
             wallet.get().setMoneyAmount(wallet.get().getMoneyAmount() + transaction.getTotalSpent());
@@ -119,40 +128,91 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.findAllByMonthTimeAndYearTime(2, month, id), HttpStatus.OK);
     }
 
-    @GetMapping("/find-all-income-6Month/{id}")
-    public ResponseEntity<Iterable<Transaction>> findAllTransactionsIncomeFor6Months(@PathVariable Long id) {
+    @GetMapping("/find-all-income-6month/{id}")
+    public ResponseEntity<HashMap<Integer,Iterable<Transaction>>> findAllTransactionsIncomeFor6Months(@PathVariable Long id) {
+        HashMap<Integer, Iterable<Transaction>> transactionIncome = new HashMap<>();
         String presentTime = String.valueOf(java.time.LocalDate.now());
         String[] time = presentTime.split("-");
-        int year = Integer.parseInt(time[0]);
-        int month = Integer.parseInt(time[1]) - 6;
-        String sixMonthsAgo;
-        String day = time[2];
-        if (month < 1) {
-            year = year - 1;
-            month = 12;
-        }if (month < 10) {
-            sixMonthsAgo = year + "-0" + month + "-" + day;
+        int firstYear = Integer.parseInt(time[0]);
+        int firstMonth = Integer.parseInt(time[1]);
+        int firstDay = Integer.parseInt(time[2]) - Integer.parseInt(time[2]) + 1;
+        String currentMonth ;
+        if (firstMonth < 10) {
+            currentMonth = firstYear + "-0" + firstMonth + "-0" + firstDay;
         }else {
-            sixMonthsAgo = year + "-" + month + "-" + day;
+            currentMonth = firstYear + "-" + firstMonth + "-0" + firstDay;
         }
-        return new ResponseEntity<>(transactionService.findAllTransactionsIncomeFor6Months(id, presentTime, sixMonthsAgo), HttpStatus.OK);
+        transactionIncome.put(firstMonth, transactionService.findAllTransactionsIncomeFor6Months(id, presentTime, currentMonth));
+        firstDay = 31;
+        for (int i = 1; i < 6; i++) {
+            String timeNow;
+            String nextTime;
+            int day = 1;
+            firstMonth = Integer.parseInt(time[1]) - i;
+            if (firstMonth < 1) {
+                firstMonth = 12;
+                firstYear = firstYear -1;
+            }
+            if (firstMonth < 10) {
+                timeNow = firstYear + "-0" + firstMonth + "-" + firstDay;
+                nextTime = firstYear + "-0" + firstMonth + "-0" + day;
+            }else {
+                timeNow = firstYear + "-" + firstMonth + "-" + firstDay;
+                nextTime = firstYear + "-" + firstMonth + "-0" + day;
+            }
+            transactionIncome.put(firstMonth, transactionService.findAllTransactionsIncomeFor6Months(id, timeNow, nextTime));
+        }
+        System.out.println(transactionIncome);
+        return new ResponseEntity<>(transactionIncome,HttpStatus.OK);
     }
-    @GetMapping("/find-all-Expense-6Month/{id}")
-    public ResponseEntity<Iterable<Transaction>> findAllTransactionsExpenseFor6Months(@PathVariable Long id) {
+
+    @GetMapping("/find-all-expense-6month/{id}")
+    public ResponseEntity<HashMap<Integer,Iterable<Transaction>>> findAllTransactionsExpenseFor6Months(@PathVariable Long id) {
+        HashMap<Integer, Iterable<Transaction>> transactionExpense = new HashMap<>();
         String presentTime = String.valueOf(java.time.LocalDate.now());
         String[] time = presentTime.split("-");
-        int year = Integer.parseInt(time[0]);
-        int month = Integer.parseInt(time[1]) - 6;
-        String sixMonthsAgo;
-        String day = time[2];
-        if (month < 1) {
-            year = year - 1;
-            month = 12;
-        }if (month < 10) {
-            sixMonthsAgo = year + "-0" + month + "-" + day;
+        int firstYear = Integer.parseInt(time[0]);
+        int firstMonth = Integer.parseInt(time[1]);
+        int firstDay = Integer.parseInt(time[2]) - Integer.parseInt(time[2]) + 1;
+        String currentMonth ;
+        if (firstMonth < 10) {
+            currentMonth = firstYear + "-0" + firstMonth + "-0" + firstDay;
         }else {
-            sixMonthsAgo = year + "-" + month + "-" + day;
+            currentMonth = firstYear + "-" + firstMonth + "-0" + firstDay;
         }
-        return new ResponseEntity<>(transactionService.findAllTransactionsExpenseFor6Months(id, presentTime, sixMonthsAgo), HttpStatus.OK);
+        transactionExpense.put(firstMonth, transactionService.findAllTransactionsExpenseFor6Months(id, presentTime, currentMonth));
+        firstDay = 31;
+        for (int i = 1; i < 6; i++) {
+            String timeNow;
+            String nextTime;
+            int day = 1;
+            firstMonth = Integer.parseInt(time[1]) - i;
+            if (firstMonth < 1) {
+                firstMonth = 12;
+                firstYear = firstYear -1;
+            }
+            if (firstMonth < 10) {
+                timeNow = firstYear + "-0" + firstMonth + "-" + firstDay;
+                nextTime = firstYear + "-0" + firstMonth + "-0" + day;
+            }else {
+                timeNow = firstYear + "-" + firstMonth + "-" + firstDay;
+                nextTime = firstYear + "-" + firstMonth + "-0" + day;
+            }
+            transactionExpense.put(firstMonth, transactionService.findAllTransactionsExpenseFor6Months(id, timeNow, nextTime));
+        }
+        System.out.println(transactionExpense);
+        return new ResponseEntity<>(transactionExpense,HttpStatus.OK);
+    }
+
+    @GetMapping("find-all-transaction")
+    public ResponseEntity<Iterable<Transaction>> findAllTransactions(@RequestParam String startTime, @RequestParam String endTime, @RequestParam Long status, @RequestParam Long from, @RequestParam Long to, @RequestParam Long id) {
+        if (startTime.equals("") || endTime.equals("")) {
+            startTime = "1900-01-01";
+            endTime = "3000-01-01";
+        }
+        if (from == 0 || to == 0) {
+            to = Long.valueOf(1000000000);
+        }
+        return new ResponseEntity<>(transactionService.findAllByTransaction(String.valueOf(LocalDate.parse(startTime)), String.valueOf(LocalDate.parse(endTime)), status, from, to, id), HttpStatus.OK);
     }
 }
