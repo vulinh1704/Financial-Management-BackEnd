@@ -1,7 +1,9 @@
 package com.example.airbnb.controller;
 
+import com.example.airbnb.model.Category;
 import com.example.airbnb.model.Transaction;
 import com.example.airbnb.model.Wallet;
+import com.example.airbnb.service.CategoryService;
 import com.example.airbnb.service.TransactionService;
 import com.example.airbnb.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Optional;
@@ -23,6 +26,9 @@ public class TransactionController {
 
     @Autowired
     private WalletService walletService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("find-by-wallet/{id}")
     public ResponseEntity<Iterable<Transaction>> findAll(@PathVariable Long id) {
@@ -56,6 +62,8 @@ public class TransactionController {
     @PostMapping("/create")
     public ResponseEntity<Optional<Transaction>> createTransaction(@RequestBody Transaction transaction) {
         Optional<Wallet> wallet = walletService.findById(transaction.getWallet().getId());
+        Optional<Category> category = categoryService.findById(transaction.getCategory().getId());
+        transaction.getCategory().setStatus(category.get().getStatus());
         transactionService.save(transaction);
         if (transaction.getCategory().getStatus() == 1) {
             wallet.get().setMoneyAmount(wallet.get().getMoneyAmount() + transaction.getTotalSpent());
@@ -189,5 +197,17 @@ public class TransactionController {
         }
         System.out.println(transactionExpense);
         return new ResponseEntity<>(transactionExpense,HttpStatus.OK);
+    }
+
+    @GetMapping("find-all-transaction")
+    public ResponseEntity<Iterable<Transaction>> findAllTransactions(@RequestParam String startTime, @RequestParam String endTime, @RequestParam Long status, @RequestParam Long from, @RequestParam Long to, @RequestParam Long id) {
+        if (startTime.equals("") || endTime.equals("")) {
+            startTime = "1900-01-01";
+            endTime = "3000-01-01";
+        }
+        if (from == 0 || to == 0) {
+            to = Long.valueOf(1000000000);
+        }
+        return new ResponseEntity<>(transactionService.findAllByTransaction(String.valueOf(LocalDate.parse(startTime)), String.valueOf(LocalDate.parse(endTime)), status, from, to, id), HttpStatus.OK);
     }
 }
