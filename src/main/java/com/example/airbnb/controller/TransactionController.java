@@ -30,12 +30,12 @@ public class TransactionController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("find-by-wallet/{id}")
+    @GetMapping("/find-by-wallet/{id}")
     public ResponseEntity<Iterable<Transaction>> findAll(@PathVariable Long id) {
         return new ResponseEntity<>(transactionService.findAllByWallet_Id(id), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Transaction> findById(@PathVariable Long id) {
         Optional<Transaction> optionalTransaction = transactionService.findById(id);
         if (!optionalTransaction.isPresent()) {
@@ -75,7 +75,7 @@ public class TransactionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Transaction> removeTransaction(@PathVariable Long id) {
         Optional<Transaction> transaction = transactionService.findById(id);
         Optional<Wallet> editWallet = walletService.findById(transaction.get().getWallet().getId());
@@ -112,13 +112,13 @@ public class TransactionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("find-all-by-time")
+    @GetMapping("/find-all-by-time")
     public ResponseEntity<Iterable<Transaction>> findAllByMonthTimeAndYearTime(@RequestParam("status") int status, @RequestParam("id") int id) {
         String month = String.valueOf(YearMonth.now());
         return new ResponseEntity<>(transactionService.findAllByMonthTimeAndYearTime(status, month, id), HttpStatus.OK);
     }
 
-    @GetMapping("find-all-by-time2")
+    @GetMapping("/find-all-by-time2")
     public ResponseEntity<Iterable<Transaction>> findAllByMonthTimeAndYearTime(@RequestParam("id") int id) {
         String month = String.valueOf(YearMonth.now());
         return new ResponseEntity<>(transactionService.findAllByMonthTimeAndYearTime(2, month, id), HttpStatus.OK);
@@ -200,7 +200,7 @@ public class TransactionController {
         return new ResponseEntity<>(transactionExpense, HttpStatus.OK);
     }
 
-    @GetMapping("find-all-transaction")
+    @GetMapping("/find-all-transaction")
     public ResponseEntity<Iterable<Transaction>> findAllTransactions(@RequestParam String startTime, @RequestParam String endTime, @RequestParam Long status, @RequestParam Long from, @RequestParam Long to, @RequestParam Long id) {
         if (startTime.equals("")) {
             startTime = "1900-01-01";

@@ -22,12 +22,12 @@ public class WalletController {
     @Autowired
     private TransactionService transactionService;
 
-    @GetMapping("find-by-user/{id}")
+    @GetMapping("/find-by-user/{id}")
     public ResponseEntity<Iterable<Wallet>> findAll(@PathVariable Long id) {
         return new ResponseEntity<>(walletService.findAllByStatus(id), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Wallet> findById(@PathVariable Long id) {
         Optional<Wallet> optionalWallet = walletService.findById(id);
         if (!optionalWallet.isPresent()) {
@@ -41,7 +41,7 @@ public class WalletController {
         return new ResponseEntity<>(walletService.save(wallet), HttpStatus.OK);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     private ResponseEntity<Wallet> update(@PathVariable Long id, @RequestBody Wallet wallet) {
         Optional<Wallet> walletOptional = walletService.findById(id);
         if (!walletOptional.isPresent()) {

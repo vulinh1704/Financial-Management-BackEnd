@@ -17,12 +17,12 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("find-by-user/{id}")
+    @GetMapping("/find-by-user/{id}")
     public ResponseEntity<Iterable<Category>> findAll(@PathVariable Long id) {
         return new ResponseEntity<>(categoryService.findAllByUserId(id), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Category> findById(@PathVariable Long id) {
         Optional<Category> categoryOptional = categoryService.findById(id);
         if (!categoryOptional.isPresent()) {
@@ -31,7 +31,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.findById(id).get(), HttpStatus.OK);
     }
 
-    @GetMapping("find-by-status/{num}/{id}")
+    @GetMapping("/find-by-status/{num}/{id}")
     public ResponseEntity<Iterable<Category>> findAllByStatus(@PathVariable int num, @PathVariable Long id) {
         return new ResponseEntity<>(categoryService.findAllByStatus(num,id), HttpStatus.OK);
     }
@@ -41,7 +41,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.save(category), HttpStatus.OK);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     private ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category) {
         Optional<Category> categoryOptional = categoryService.findById(id);
         if (!categoryOptional.isPresent()) {
@@ -51,7 +51,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.save(category), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     private ResponseEntity<Category> delete(@PathVariable Long id) {
         Optional<Category> optionalCategory = categoryService.findById(id);
         if (!optionalCategory.isPresent()) {
