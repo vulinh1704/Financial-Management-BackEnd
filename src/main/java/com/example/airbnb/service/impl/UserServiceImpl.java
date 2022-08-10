@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+       return userRepository.save(user);
     }
 
     @Override
@@ -116,5 +116,10 @@ public class UserServiceImpl implements UserService {
             isCorrentConfirmPassword = true;
         }
         return isCorrentConfirmPassword;
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }

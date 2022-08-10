@@ -35,6 +35,11 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.findAllByWallet_Id(id), HttpStatus.OK);
     }
 
+    @GetMapping("find-by-category/{id}")
+    public ResponseEntity<Iterable<Transaction>> findAllByCategory_Id(@PathVariable Long id) {
+        return new ResponseEntity<>(transactionService.findAllByCategory_Id(id), HttpStatus.OK);
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<Transaction> findById(@PathVariable Long id) {
         Optional<Transaction> optionalTransaction = transactionService.findById(id);
@@ -75,7 +80,7 @@ public class TransactionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Transaction> removeTransaction(@PathVariable Long id) {
         Optional<Transaction> transaction = transactionService.findById(id);
         Optional<Wallet> editWallet = walletService.findById(transaction.get().getWallet().getId());

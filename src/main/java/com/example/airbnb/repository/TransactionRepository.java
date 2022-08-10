@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    @Query(value = "select * from `financial_management`.transaction " +
-            "where category_spending_id=? ", nativeQuery = true)
-    Iterable<Transaction> findAllByCategorySpending_Id(Long id);
+    @Query(value = "select * from financial_management.transaction where category_id= :id ", nativeQuery = true)
+    Iterable<Transaction> findAllByCategory_Id(Long id);
 
     @Query(value = "select * from `financial_management`.transaction where wallet_id=?", nativeQuery = true)
     Iterable<Transaction> findAllByWallet_Id(Long id);
