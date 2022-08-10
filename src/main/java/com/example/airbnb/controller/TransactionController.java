@@ -75,7 +75,7 @@ public class TransactionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Transaction> removeTransaction(@PathVariable Long id) {
         Optional<Transaction> transaction = transactionService.findById(id);
         Optional<Wallet> editWallet = walletService.findById(transaction.get().getWallet().getId());

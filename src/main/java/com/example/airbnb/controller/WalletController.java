@@ -52,9 +52,9 @@ public class WalletController {
     }
 
     @PutMapping("/delete/{id}")
-    public ResponseEntity<Wallet> deleteWallet(@PathVariable Long id, @RequestBody Wallet wallet){
+    public ResponseEntity<Wallet> deleteWallet(@PathVariable Long id, @RequestBody Wallet wallet) {
         Optional<Wallet> walletDelete = walletService.findById(id);
-        if(!walletDelete.isPresent()){
+        if (!walletDelete.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         walletDelete.get().setStatus(0);
@@ -65,52 +65,55 @@ public class WalletController {
 
     @GetMapping("/history/{id}")
     public ResponseEntity<Iterable<Wallet>> findAllByStatusPrivateAndUser_Id(@PathVariable Long id) {
-        return new ResponseEntity<>(walletService.findAllByStatusPrivateAndUser_Id(id), HttpStatus.OK) ;
+        return new ResponseEntity<>(walletService.findAllByStatusPrivateAndUser_Id(id), HttpStatus.OK);
     }
 
     @GetMapping("/find-by-ownerId")
     public ResponseEntity<Iterable<Wallet>> findAllByStatusPublicAndUser_Id(@RequestParam Long id) {
         return new ResponseEntity<>(walletService.findAllByStatusPublicAndUser_Id(id), HttpStatus.OK);
     }
+
     @PutMapping("/edit-money-type/{id}")
-    public ResponseEntity<Wallet> updateWallet(@PathVariable Long id, @RequestBody Wallet wallet){
+    public ResponseEntity<Wallet> updateWallet(@PathVariable Long id, @RequestBody Wallet wallet) {
         Optional<Wallet> walletOptional = walletService.findById(id);
-        if(!walletOptional.isPresent()){
+        if (!walletOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if (walletOptional.get().getMoneyType().getId().equals(wallet.getMoneyType().getId())){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        wallet.setId(walletOptional.get().getId());
-        Iterable<Transaction> transactions = transactionService.findAllByWallet(walletOptional.get().getId());
-        if (walletOptional.get().getMoneyType().getId() == 1) {
-        wallet.setMoneyAmount(Math.ceil((walletOptional.get().getMoneyAmount() / 23000) * 100) / 100);
-        }else {
-            wallet.setMoneyAmount(Math.ceil((walletOptional.get().getMoneyAmount() * 23000) * 100) / 100);
-        }
-        for (Transaction transaction: transactions) {
+        if (walletOptional.get().getMoneyType().getId().equals(wallet.getMoneyType().getId())) {
+            wallet.setId(id);
+            return new ResponseEntity<>(walletService.save(wallet), HttpStatus.OK);
+        } else {
+            wallet.setId(walletOptional.get().getId());
+            Iterable<Transaction> transactions = transactionService.findAllByWallet(walletOptional.get().getId());
             if (walletOptional.get().getMoneyType().getId() == 1) {
-                transaction.setId(transaction.getId());
-                transaction.setTotalSpent(Math.ceil((transaction.getTotalSpent() / 23000) * 100) / 100);
-                transactionService.save(transaction);
-            }else {
-                transaction.setId(transaction.getId());
-                transaction.setTotalSpent(Math.ceil((transaction.getTotalSpent() * 23000) * 100) / 100);
-                transactionService.save(transaction);
+                wallet.setMoneyAmount(Math.ceil((walletOptional.get().getMoneyAmount() / 23000) * 10000) / 10000);
+            } else {
+                wallet.setMoneyAmount(Math.ceil((walletOptional.get().getMoneyAmount() * 23000) * 10000) / 10000);
             }
+            for (Transaction transaction : transactions) {
+                if (walletOptional.get().getMoneyType().getId() == 1) {
+                    transaction.setId(transaction.getId());
+                    transaction.setTotalSpent(Math.ceil((transaction.getTotalSpent() / 23000) * 10000) / 10000);
+                    transactionService.save(transaction);
+                } else {
+                    transaction.setId(transaction.getId());
+                    transaction.setTotalSpent(Math.ceil((transaction.getTotalSpent() * 23000) * 10000) / 10000);
+                    transactionService.save(transaction);
+                }
+            }
+            wallet.setIcon(walletOptional.get().getIcon());
+            wallet.setName(walletOptional.get().getName());
+            wallet.setUser(walletOptional.get().getUser());
+            wallet.setStatus(walletOptional.get().getStatus());
+            walletService.save(wallet);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        wallet.setIcon(walletOptional.get().getIcon());
-        wallet.setName(walletOptional.get().getName());
-        wallet.setUser(walletOptional.get().getUser());
-        wallet.setStatus(walletOptional.get().getStatus());
-        walletService.save(wallet);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update-status/{id}")
-    public ResponseEntity<Wallet> updateStatus(@PathVariable Long id, @RequestBody Wallet wallet){
+    public ResponseEntity<Wallet> updateStatus(@PathVariable Long id, @RequestBody Wallet wallet) {
         Optional<Wallet> walletOptional = walletService.findById(id);
-        if(!walletOptional.isPresent()){
+        if (!walletOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         wallet.setId(id);
