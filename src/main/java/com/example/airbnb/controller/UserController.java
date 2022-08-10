@@ -171,4 +171,10 @@ public class UserController {
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @GetMapping("/users/find-by-username/{username}")
+    public ResponseEntity<User> findByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }
