@@ -12,7 +12,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "select * from financial_management.transaction where category_id= :id ", nativeQuery = true)
     Iterable<Transaction> findAllByCategory_Id(Long id);
 
-    @Query(value = "select * from `financial_management`.transaction where wallet_id=?", nativeQuery = true)
+    @Query(value = "select * from `financial_management`.transaction where wallet_id=? order by id DESC;", nativeQuery = true)
     Iterable<Transaction> findAllByWallet_Id(Long id);
 
     @Query(value = "select * from `financial-management`.transaction\n" +
